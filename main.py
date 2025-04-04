@@ -34,33 +34,31 @@ def groq(instrucations, query):
       return (ra)
 
 def append_to_file(text):
-    filename = "data.txt"
-    try:
-        with open(filename, "a+") as file:
-            file.seek(0)
-            lines = file.readlines()
-            if len(lines) >= 9:
-                file.seek(0)
-                txt = file.read()
-                rtxt = txt.replace("\n", ",")
-                print(groq(f'''Make a 30 words smart feedback to the user on how she can continue her objective within the inputs
-                like if she is asking any study questions or inputs relate to study, then you must give a feedback on
+  filename = "data.txt"
+  try:
+    with open(filename, "a+") as file:
+      if file.tell() > 0:
+        file.write("\n")
+      file.write(text)
+      lines = file.readlines()
+      if len(lines) >= 10:
+        txt = file.read() 
+        rtxt = txt.replace("\n", ",")
+        print(groq(f'''Make a 30 words smart feedback to the user on how she can continue her objective within the inputs
+                like if she is asking any study questions or inputs relate to study, then you must give a feedback on 
                 how she should take a break or interest her about some games or movies that can cheer her up but encourage
                 to study aswell but this is an example so if the user is doing anything else then you must give the
                 feedback that can cheer them and encourage them. Here is the inputs''', {rtxt}))
-                file.seek(0)
-                file.truncate(0)
-            else:
-                if file.tell() > 0:
-                    file.write("\n")
-            file.write(text)
-
-    except FileNotFoundError:
+        file.seek(0)
+        file.truncate(0)
+      else:
+        return ""
+  
+  except FileNotFoundError:
         print(f"The file '{filename}' was not found.")
-    except Exception as e:
-        print(f"An error occurred: {e}")
-
-
+  except Exception as e:
+      print(f"An error occurred: {e}")
+      
 
 if __name__ == "__main__":
     while True:

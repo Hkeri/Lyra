@@ -4,7 +4,6 @@ import pyautogui
 from re import search
 from keyboard import press_and_release
 import os
-from speak import speak
 from psutil import sensors_battery, net_io_counters
 from screen_brightness_control import set_brightness
 from django.core.mail import send_mail
@@ -111,9 +110,9 @@ def playMusic(song_name):
     try:
         import pywhatkit
         pywhatkit.playonyt(song_name)
-        speak(f"Playing {song_name}")
+        print(f"Playing {song_name}")
     except Exception as e:
-        speak("Sir I cannot play that certain song")
+        print("Sir I cannot play that certain song")
     
 def read_pdf(pdf_file):
     # creating a pdf reader object
@@ -386,36 +385,36 @@ def internet_speed():
 def smart_battery():
     batt = sensors_battery()
     if batt.power_plugged:
-        speak(f"The Battery is Currently {batt.percent}")
+        print(f"The Battery is Currently {batt.percent}")
 
     else:
         if batt.percent <= 75:
-            speak(
+            print(
                 f"The Battery is {batt.percent} and it is Perfect!"
             )
 
         elif batt.percent <= 50 and batt.percent >= 75:
-            speak(
+            print(
                 f"The Battery is {batt.percent} and it is at good charge!"
             )
 
         elif batt.percent <= 25 and batt.percent >= 50:
-            speak(
+            print(
                 f"The Battery is {batt.percent} but you \nhave to charge since it is kinda low!"
             )
 
         elif batt.percent <= 10 and batt.percent >= 25:
-            speak(
+            print(
                 f"The Battery is {batt.percent} so really you must charge it right away!"
             )
 
         elif batt.percent <= 5 and batt.percent >= 10:
-            speak(
+            print(
                 f"Sir, You must charge you computer right now because it is {batt.percent}"
             )
 
         else:
-            speak(
+            print(
                 f"Sir it is Extremely Low because it is {batt.percent}. \nCharge it Immediately!"
             )
 

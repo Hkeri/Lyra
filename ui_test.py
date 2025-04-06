@@ -1,9 +1,8 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 import customtkinter
 import random
 import warnings
 import customtkinter
-from PIL import Image, ImageTk
 
 
 def destroy():
@@ -18,7 +17,7 @@ customtkinter.set_window_scaling(1)
 root.attributes('-alpha', 0.935)
 root.resizable(False, False)
 
-root.title("NEURON")
+root.title("Lyra")
 
 # Center the window
 width = root.winfo_screenwidth()
@@ -74,13 +73,6 @@ def C_Day():
     }
     return Day_dict.get(day, "")
 
-date_and_time = datetime.now().strftime("%H")
-time_change = timedelta(hours=4)
-date_and_time = datetime.strptime(date_and_time, "%H")
-new_time = date_and_time + time_change
-n = new_time.strftime("%H")
-print(n)
-
 def Temp(city1):
     import requests
     import json
@@ -118,72 +110,11 @@ def Temp(city1):
     city = city
     return None
 
-def temp_images():
-    import requests
-
-    imgcloud = ImageTk.PhotoImage(
-        Image.open(f"F:\\The_New_Start_\\weather\\clouds.png"), size=(25, 25)
-    )
-    imgclear = ImageTk.PhotoImage(
-        Image.open(f"F:\\The_New_Start_\\weather\\clear.png"), size=(25, 25)
-    )
-    imgrain = ImageTk.PhotoImage(
-        Image.open(f"F:\\The_New_Start_\\weather\\rain.png"), size=(25, 25)
-    )
-    imghaze = ImageTk.PhotoImage(
-        Image.open(f"F:\\The_New_Start_\\weather\\haze.png"), size=(25, 25)
-    )
-    imgsnow = ImageTk.PhotoImage(
-        Image.open(f"F:\\The_New_Start_\\weather\\snow.png"), size=(25, 25)
-    )
-    imgmist = ImageTk.PhotoImage(
-        Image.open(f"F:\\The_New_Start_\\weather\\mist.png"), size=(25, 25)
-    )
-    imgthunder = ImageTk.PhotoImage(
-        Image.open(f"F:\\The_New_Start_\\weather\\thunder.png"), size=(25, 25)
-    )
-    imgnight = ImageTk.PhotoImage(
-        Image.open(f"F:\\The_New_Start_\\weather\\night.png"), size=(25, 25)
-    )
-    data = requests.get(
-        "https://api.openweathermap.org/data/2.5/weather?q=Dubai&units=imperial&APPID=4cec456a12e78e190dc12413b1d46585"
-    ).json()
-    weather = data["weather"][0]["main"]
-    string = Temp(data["name"])
-    if n <= "6" and n >= "17":
-        if weather == "Clouds":
-            temp_images_label.configure(image=imgcloud)
-        if weather == "Rain":
-            temp_images_label.configure(image=imgrain)
-        if weather == "Clear":
-            temp_images_label.configure(image=imgclear)
-        if weather == "Haze":
-            temp_images_label.configure(image=imghaze)
-        if weather == "Snow":
-            temp_images_label.configure(image=imgsnow)
-        if weather == "Mist":
-            temp_images_label.configure(image=imgmist)
-        if weather == "Thunderstorm":
-            temp_images_label.configure(image=imgthunder)
-
-    if n >= "18":
-        if weather == "Clouds":
-            temp_images_label.configure(image=imgcloud)
-        if weather == "Thunderstorm":
-            temp_images_label.configure(image=imgthunder)
-        if weather == "Snow":
-            temp_images_label.configure(image=imgsnow)
-        if weather == "Rain":
-            temp_images_label.configure(image=imgrain)
-        else:
-            temp_images_label.configure(image=imgnight)
-
-    temp_images_label.after(3600000, temp_images)
 # Centered widgets
-neuron_label = customtkinter.CTkLabel(
+lyra_label = customtkinter.CTkLabel(
     root, text="lyra", font=("Ankh Sanctuary", 165), text_color="#41FDFE"
 )
-neuron_label.place(relx=0.5, rely=0.15, anchor="center")
+lyra_label.place(relx=0.5, rely=0.15, anchor="center")
 
 quote_label = customtkinter.CTkLabel(
     root, text=f"{random.choice(quotes)}", font=my_font
@@ -247,14 +178,16 @@ exit_button = customtkinter.CTkButton(
 )
 exit_button.place(relx=0.925, rely=0.950, anchor="center")
 
-temp_images_label = customtkinter.CTkLabel(root, text="")
-temp_images_label.pack(pady=20)
-temp_images_label.place(relx=0.13, rely=0.25, anchor="center")
-temp_images()
+feedback_textbox = customtkinter.CTkTextbox(
+    root,
+    width=325,
+    height=325,
+    font=("Consolas", 15),
+    corner_radius=50
+)
+feedback_textbox.place(relx=0.15725, rely=0.32575, anchor="center")
 
 
-
-
-
-
-root.mainloop()
+if __name__ == "__main__":
+    # Initialize the main loop
+    root.mainloop()

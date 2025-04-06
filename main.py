@@ -9,29 +9,11 @@ Name:
 '''
 
 #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
-from groq import Groq
 from task_automation import *
 import re
 import time
 import os
 import platform
-import pyautogui
-
-def groq(instrucations, query):
-      api_key = "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"
-      client = Groq(api_key=api_key)
-      chat_completion = client.chat.completions.create(
-      messages=[
-            {
-                  "role": "user",
-                  "content": f"{instrucations}, {query}",
-            }
-      ],
-      model="llama-3.3-70b-versatile",
-      stream=False,
-      )
-      ra = (chat_completion.choices[0].message.content).replace("**", "")
-      return (ra)
 
 def append_to_file(text):
   filename = "data.txt"
@@ -87,7 +69,9 @@ if __name__ == "__main__":
                     if the user is asking to shutdown the computer, respond "^shutdown"
                     if the user is asking to restart the computer, respond "^restart"
                     if the user is asking to take a screenshot, respond "^screenshot"
-                    if the user is asking to start a google meet, respond "^google meeting"''', question)
+                    if the user is asking to start a google meet, respond "^google meeting"
+                    if the user is asking to generate a report based on a csv file, respond "^generate report"
+                    if the user is asking to open search history, respond "search history"''', question)
       append_to_file(question)
 
       if re.search(r"^close", cmd):
@@ -199,7 +183,15 @@ if __name__ == "__main__":
     
       if re.search(r"^none", cmd):
         print(groq("Give a short detailed answer", question))
+      
+      if re.search(r"^generate report", cmd):
+        csv_file = input("Please type in the CSV file path: ")
+        word_file = input("Please type in the Word Document file path: ")
+        analyze_and_report(csv_file, word_file)
+      
+      if re.search(r"^search history", cmd):
+         s_h()
 
       if re.search("exit", cmd):
         print("Exiting...")
-        exit(0)          
+        exit(0)       

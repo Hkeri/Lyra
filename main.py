@@ -71,7 +71,8 @@ if __name__ == "__main__":
                     if the user is asking to take a screenshot, respond "^screenshot"
                     if the user is asking to start a google meet, respond "^google meeting"
                     if the user is asking to generate a report based on a csv file, respond "^generate report"
-                    if the user is asking to open search history, respond "search history"''', question)
+                    if the user is asking to open search history, respond "^search history"
+                    if the user is asking to translate a document or text file, respond "^translate document"''', question)
       append_to_file(question)
 
       if re.search(r"^close", cmd):
@@ -190,7 +191,11 @@ if __name__ == "__main__":
         analyze_and_report(csv_file, word_file)
       
       if re.search(r"^search history", cmd):
-         s_h()
+        s_h()
+      
+      if re.search(r"^translate document", cmd):
+        doc_path = input("Please type in the Document or Text File Path: ")
+        translate_document(doc_path)
 
       if re.search("exit", cmd):
         print("Exiting...")

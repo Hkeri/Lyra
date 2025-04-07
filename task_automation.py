@@ -21,6 +21,42 @@ import pywhatkit
 import datetime
 from pytube import YouTube
 import qrcode
+from groq import Groq
+from docx import Document
+import time
+import keyboard
+from googletrans import Translator
+
+def translate_document(input_file, output_file, target_language="en"):
+    translator = Translator()
+    with open(input_file, 'r') as infile, open(output_file, 'w') as outfile:
+        for line in infile:
+            translation = translator.translate(line, dest=target_language)
+            outfile.write(translation.text + "\n")
+
+translate_document("document.txt", "translated_document.txt", "es")
+
+def s_h():
+    webbrowser.open("www.google.com")
+    time.sleep(4)
+    keyboard.press_and_release('ctrl + h')
+    print("Opened Your Search History")
+
+def groq(instrucations, query):
+      api_key = "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"
+      client = Groq(api_key=api_key)
+      chat_completion = client.chat.completions.create(
+      messages=[
+            {
+                  "role": "user",
+                  "content": f"{instrucations}, {query}",
+            }
+      ],
+      model="llama-3.3-70b-versatile",
+      stream=False,
+      )
+      ra = (chat_completion.choices[0].message.content).replace("**", "")
+      return (ra)
 
 def qrCodeGenerator(input_Text_link):
     qr = qrcode.QRCode(
@@ -351,6 +387,31 @@ def change_wallpaper(image_path):
         print("Wallpaper changed successfully.")
     except Exception as e:
         print(f"Failed to change wallpaper: {e}")
+
+def analyze_and_report(csv_file, report_file):
+    """Analyzes data and generates a report using Groq AI."""
+
+    try:
+        with open(csv_file, 'r') as file:
+            csv_content = file.read()
+
+        # Use Groq AI to generate the report
+        instructions = "Analyze the following CSV data and generate a detailed report in Word format"
+        query = f"CSV Data:\n{csv_content}"
+        report_content = groq(instructions, query)
+
+        # Save the report content to a Word document
+        document = Document()
+        document.add_heading("AI-Generated Report", level=1)
+        document.add_paragraph(report_content)
+        document.save(report_file)
+
+        print(f"Report generated in '{report_file}'.")
+
+    except FileNotFoundError:
+        print(f"Error: File '{csv_file}' not found.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 
 def send_email(message, email):
